@@ -10,8 +10,6 @@ urlpatterns = [
     # Blog API
     path('api/v1/blog/', include('blog.urls')),
 
-    # E-commerce API
-    path('api/v1/ecommerce/', include('ecommerce.urls')),
     path('api/v1/auth/register/',RegisterView.as_view(), name='register'),
 
     # Auth with JWT

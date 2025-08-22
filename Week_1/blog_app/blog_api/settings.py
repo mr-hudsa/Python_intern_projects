@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt', # JWT Authentication
     'django_filters', # filters
     'blog',   # Blog app
-    'ecommerce', # New E Commerce App
 ]
 
 # REST Framework settings
