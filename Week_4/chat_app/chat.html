@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI WebSocket Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 5px; }
+        #inputBox { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>💬 FastAPI WebSocket Chat</h2>
+    <div>
+        Username: <input type="text" id="username" placeholder="Enter your name">
+        <button onclick="connect()">Connect</button>
+    </div>
+    <div id="messages"></div>
+    <div id="inputBox" style="display:none;">
+        <input type="text" id="messageInput" placeholder="Type message..." onkeypress="if(event.keyCode==13) sendMessage()">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        let socket;
+
+        function connect() {
+            const username = document.getElementById("username").value;
+            socket = new WebSocket(`ws://127.0.0.1:8000/ws/${username}`);
+
+            socket.onopen = () => {
+                document.getElementById("messages").innerHTML += `<p><b>✅ Connected as ${username}</b></p>`;
+                document.getElementById("inputBox").style.display = "block";
+            };
+
+            socket.onmessage = (event) => {
+                document.getElementById("messages").innerHTML += `<p>${event.data}</p>`;
+            };
+
+            socket.onclose = () => {
+                document.getElementById("messages").innerHTML += `<p>⚠️ Disconnected</p>`;
+            };
+        }
+
+        function sendMessage() {
+            const msg = document.getElementById("messageInput").value;
+            socket.send(msg);
+            document.getElementById("messages").innerHTML += `<p><b>You:</b> ${msg}</p>`;
+            document.getElementById("messageInput").value = "";
+        }
+    </script>
+</body>
+</html>
